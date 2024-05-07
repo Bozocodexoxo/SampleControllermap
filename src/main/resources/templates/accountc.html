@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link th:href="@{/assets/css/style-starter.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{header::header}"></div>
+
+<form th:action="@{/savaCred}" method="post" th:object="${user}">
+    <div>
+        <div>
+            <div>
+                <label for="username">Username</label>
+            </div>
+            <input type="text" id="username" name="username" th:field="*{username}" />
+        </div>
+    </div>
+    <div>
+        <div>
+            <div>
+                <label for="password">Password</label>
+            </div>
+            <input type="password" id="password" name="password" th:field="*{password}" />
+        </div>
+    </div>
+    <button type="submit">Create</button>
+</form>
+
+<div th:replace="~{footer::footer}"></div>
+</body>
+</html>

@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Data
 @Entity
@@ -14,6 +16,7 @@ public class Student {
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     @NotBlank(message = "name must be not blank")
     @Size(min = 3,message = "please enter more than 3 characters")
     private String FirstName;

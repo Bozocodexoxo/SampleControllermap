@@ -1,5 +1,6 @@
 package com.vamshi.education.Controller;
 
+import com.vamshi.education.Service.studentservice;
 import com.vamshi.education.Model.Student;
 import com.vamshi.education.Service.studentservice;
 import jakarta.validation.Valid;
@@ -12,13 +13,13 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class ContactController {
-Logger logger= LogManager.getLogger();
-    studentservice sservice;
-@Autowired
+    Logger logger = LogManager.getLogger();
+    private final studentservice sservice;
+
+    @Autowired
     public ContactController(studentservice sservice) {
         this.sservice = sservice;
     }
@@ -28,15 +29,19 @@ Logger logger= LogManager.getLogger();
         model.addAttribute("student", new Student());
         return "contact";
     }
+
     @PostMapping("/saveMsg")
-    public String saveMessage(@Valid @ModelAttribute Student student, Errors error){
-    if(error.hasErrors()){
-        logger.info("please enter correct details");
-        return "/contacts";
-    }
+    public String saveMessage(@Valid @ModelAttribute Student student, Errors errors, Model model) {
 
-    sservice.save(student);
 
-        return "redirect:/contact";
-    }
-}
+        try {
+            sservice.save(student);
+            logger.info("Student data saved successfully");
+            return "redirect:/contact";
+        } catch (Exception e) {
+            logger.error("Error occurred while saving student: " + e.getMessage());
+            e.printStackTrace(); // Log the stack trace of the exception
+            model.addAttribute("errorMessage", "An error occurred while saving the student. Please try again later.");
+            return "contact"; // Return the contact form
+        }
+    }}
